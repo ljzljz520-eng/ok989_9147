@@ -1,0 +1,10 @@
+{
+  "schema_version": 1,
+  "metrics": {"production_loc": 2304, "production_files": 22, "production_packages": 11, "test_files": 10, "production_functions": 142, "decision_points": 326},
+  "persistence": {"module": "go.etcd.io/bbolt", "entities": ["RedisConfig", "RoutePolicy", "TokenRecord", "AuditEvent"], "reopen_test": "TestPersistenceSurvivesReopen"},
+  "workflows": [
+    {"steps": ["configure Redis endpoint", "create route policy", "issue internal token", "persist deployment audit"], "test": "TestTokenLifecycle"},
+    {"steps": ["read x-internal-token header", "resolve route policy", "query Redis token key", "return allow or deny status"], "test": "TestAuthorizeOutcomes"},
+    {"steps": ["load persisted records", "close embedded store", "reopen embedded store", "verify entities remain available"], "test": "TestPersistenceSurvivesReopen"}
+  ]
+}
